@@ -21,7 +21,7 @@ FROM employees
 WHERE salary = (SELECT MAX(salary) FROM employees);
 </small>
 ---
-2. Second highest salary
+**2. Second highest salary**
 
 SELECT TOP 1 salary
 FROM employees
