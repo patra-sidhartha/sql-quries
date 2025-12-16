@@ -4,15 +4,19 @@
 SELECT MAX(salary) AS highest_salary
 FROM employees;
 ---
+
+---
 SELECT salary
 FROM employees
 ORDER BY salary DESC
 LIMIT 1;
+---
 
+---
 SELECT *
 FROM employees
 WHERE salary = (SELECT MAX(salary) FROM employees);
-
+---
 
 2. Second highest salary
 
