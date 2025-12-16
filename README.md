@@ -7,17 +7,19 @@ FROM employees;
 </small>
 
 ---
+<small>
 SELECT salary
 FROM employees
 ORDER BY salary DESC
 LIMIT 1;
----
+</small>small>
 
 ---
+<small>
 SELECT *
 FROM employees
 WHERE salary = (SELECT MAX(salary) FROM employees);
----
+</small>
 
 2. Second highest salary
 
