@@ -1,6 +1,6 @@
 # sql-quries
 **1. To find the highest salary of an employee in a SQL database**
-#SELECT MAX(salary) AS highest_salary
+# SELECT MAX(salary) AS highest_salary
 FROM employees;
 
 SELECT salary
