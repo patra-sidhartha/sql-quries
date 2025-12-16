@@ -1,8 +1,10 @@
 # sql-quries
 **1. To find the highest salary of an employee in a SQL database**
 ---
+<small>
 SELECT MAX(salary) AS highest_salary
 FROM employees;
+</small>
 ---
 
 ---
