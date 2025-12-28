@@ -1,13 +1,16 @@
 SQL
 ----------
 1. Find the highest salary in emp table
-	- SELECT * FROM emp ORDER BY salary DESC LIMIT 1;
+	- SELECT * FROM emp 
+	ORDER BY salary DESC LIMIT 1;
 2. Find the second highest salary 
 	- SELECT MAX(Salary) FROM Employees 
 	WHERE Salary < (SELECT MAX(Salary) FROM Employees);
 
-	- SELECT DISTINCT Salary FROM Employees ORDER BY Salary DESC LIMIT 1 OFFSET 1;
+	- SELECT DISTINCT Salary FROM Employees
+	ORDER BY Salary DESC LIMIT 1 OFFSET 1;
 3. Find the nth highest salary
+   
 	SELECT DISTINCT Salary
 	FROM Employees ORDER BY  Salary DESC
 	LIMIT 1 OFFSET (N - 1); -- Replace N with the desired rank (e.g., 3 for the 3rd highest)
@@ -20,11 +23,11 @@ SQL
 		WHERE e2.salary >= e1.salary
 	);
 
-4. Find the highest salary dept wise
+5. Find the highest salary dept wise
 	SELECT Dept_ID, MAX(Salary) AS Highest_Salary
 	FROM  Employees
 	GROUP BY Dept_ID;
-5. SQL Query for Employee Details (Highest Earner)
+6. SQL Query for Employee Details (Highest Earner)
 	SELECT e.emp_name, e.dep_id, e.salary
 	FROM  employees e
 	WHERE e.salary = (
