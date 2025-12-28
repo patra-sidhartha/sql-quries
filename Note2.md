@@ -1,139 +1,139 @@
 SQL
 ----------
-1. Find the highest salary in emp table
-	- SELECT * FROM emp 
-	ORDER BY salary DESC LIMIT 1;
-2. Find the second highest salary 
-	- SELECT MAX(Salary) FROM Employees 
-	WHERE Salary < (SELECT MAX(Salary) FROM Employees);
+1. Find the highest salary in emp table <br>
+	- SELECT * FROM emp <br>
+	ORDER BY salary DESC LIMIT 1; 
+2. Find the second highest salary  <br>
+	- SELECT MAX(Salary) FROM Employees <br>
+	WHERE Salary < (SELECT MAX(Salary) FROM Employees); <br>
 
-	- SELECT DISTINCT Salary FROM Employees
+	- SELECT DISTINCT Salary FROM Employees <br>
 	ORDER BY Salary DESC LIMIT 1 OFFSET 1;
-3. Find the nth highest salary
+3. Find the nth highest salary  <br>
    
-	SELECT DISTINCT Salary
-	FROM Employees ORDER BY  Salary DESC
-	LIMIT 1 OFFSET (N - 1); -- Replace N with the desired rank (e.g., 3 for the 3rd highest)
+	SELECT DISTINCT Salary <br>
+	FROM Employees ORDER BY  Salary DESC <br>
+	LIMIT 1 OFFSET (N - 1); -- Replace N with the desired rank (e.g., 3 for the 3rd highest) <br>
 	
-	SELECT DISTINCT salary
-	FROM employees e1
-	WHERE n = (
-		SELECT COUNT(DISTINCT salary)
-		FROM employees e2
-		WHERE e2.salary >= e1.salary
+	SELECT DISTINCT salary  <br>
+	FROM employees e1  <br>
+	WHERE n = (  <br>
+		SELECT COUNT(DISTINCT salary)  <br>
+		FROM employees e2   <br>
+		WHERE e2.salary >= e1.salary <br>
 	);
 
-5. Find the highest salary dept wise
-	SELECT Dept_ID, MAX(Salary) AS Highest_Salary
-	FROM  Employees
-	GROUP BY Dept_ID;
-6. SQL Query for Employee Details (Highest Earner)
-	SELECT e.emp_name, e.dep_id, e.salary
-	FROM  employees e
-	WHERE e.salary = (
-			SELECT MAX(salary)
-			FROM employees e2
-			WHERE e2.dep_id = e.dep_id
+5. Find the highest salary dept wise  <br>
+	SELECT Dept_ID, MAX(Salary) AS Highest_Salary  <br>
+	FROM  Employees  <br>
+	GROUP BY Dept_ID; 
+6. SQL Query for Employee Details (Highest Earner)   <br>
+	SELECT e.emp_name, e.dep_id, e.salary <br>
+	FROM  employees e  <br>
+	WHERE e.salary = (  <br>
+			SELECT MAX(salary)  <br>
+			FROM employees e2  <br>
+			WHERE e2.dep_id = e.dep_id  <br>
 		);
 
-5. Find average salary of employee
-	SELECT AVG(Salary) AS AverageSalary
-	FROM Employees;
+5. Find average salary of employee   <br>
+	SELECT AVG(Salary) AS AverageSalary  <br>
+	FROM Employees;  <br>
 
-6. Find the max salary of a dept
-	SELECT dept_id, MAX(salary) AS max_salary
-	FROM employees
+6. Find the max salary of a dept  <br>
+	SELECT dept_id, MAX(salary) AS max_salary  <br>
+	FROM employees  <br>
 	GROUP BY dept_id;
 
-7. Find the avg salary of a department
-	SELECT Department, AVG(Salary) AS DepartmentAverageSalary
-	FROM Employees
+7. Find the avg salary of a department  <br>
+	SELECT Department, AVG(Salary) AS DepartmentAverageSalary <br>
+	FROM Employees  <br>
 	GROUP BY Department;
 
 
-8. Find all employee and its manager
-	SELECT e.employee_name AS Employee, m.employee_name AS Manager
-	FROM employees e
-	INNER JOIN employees m ON e.manager_id = m.employee_id;
+8. Find all employee and its manager  <br>
+	SELECT e.employee_name AS Employee, m.employee_name AS Manager <br>
+	FROM employees e <br>
+	INNER JOIN employees m ON e.manager_id = m.employee_id; <br>
 	
-	SELECT e.employee_name AS Employee, m.employee_name AS Manager
-	FROM employees e
-	LEFT JOIN employees m ON e.manager_id = m.employee_id;
+	SELECT e.employee_name AS Employee, m.employee_name AS Manager <br>
+	FROM employees e <br>
+	LEFT JOIN employees m ON e.manager_id = m.employee_id; <br>
 
 
 
-9. Find the duplicate employee 
-	SELECT email, COUNT(email) AS occurrences
-	FROM employees
-	GROUP BY email
-	HAVING COUNT(email) > 1;
+9. Find the duplicate employee   <br>
+	SELECT email, COUNT(email) AS occurrences <br>
+	FROM employees  <br>
+	GROUP BY email   <br>
+	HAVING COUNT(email) > 1;  <br>
 	
-	SELECT name, department, COUNT(*) AS occurrences
-	FROM employees
-	GROUP BY name, department
-	HAVING COUNT(*) > 1;
+	SELECT name, department, COUNT(*) AS occurrences  <br>
+	FROM employees   <br>
+	GROUP BY name, department  <br>
+	HAVING COUNT(*) > 1;  <br>
 	
-	SELECT DISTINCT e1.*
-	FROM employees e1
-	INNER JOIN employees e2 ON e1.name = e2.name 
-		AND e1.email = e2.email 
-		AND e1.id <> e2.id;
+	SELECT DISTINCT e1.*  <br>
+	FROM employees e1  <br>
+	INNER JOIN employees e2 ON e1.name = e2.name  <br>
+		AND e1.email = e2.email <br>
+		AND e1.id <> e2.id; 
 
 
 
-10. How to delete the duplicate record
+10. How to delete the duplicate record <br>
 
-	DELETE e1 FROM employees e1
-	INNER JOIN employees e2 
-	ON e1.name = e2.name AND e1.email = e2.email
-	WHERE e1.id > e2.id;
+	DELETE e1 FROM employees e1 <br>
+	INNER JOIN employees e2 <br>
+	ON e1.name = e2.name AND e1.email = e2.email  <br>
+	WHERE e1.id > e2.id;  <br>
 
-	DELETE FROM employees
-	WHERE id NOT IN (
-		SELECT MIN(id)
-		FROM employees
-		GROUP BY name, email
+	DELETE FROM employees  <br> 
+	WHERE id NOT IN (  <br>
+		SELECT MIN(id)  <br>
+		FROM employees  <br>
+		GROUP BY name, email  <br>
 	);
 
-11. Write a SQL query to find employees who have the same manager.
-	SELECT 
-    e1.manager_id, 
-    e1.name AS Employee_1, 
-    e2.name AS Employee_2
-	FROM employees e1
-	INNER JOIN employees e2 
-		ON e1.manager_id = e2.manager_id 
-		AND e1.employee_id < e2.employee_id
+11. Write a SQL query to find employees who have the same manager. <br>
+	SELECT <br>
+    e1.manager_id, <br>
+    e1.name AS Employee_1, <br>
+    e2.name AS Employee_2  <br>
+	FROM employees e1  <br>
+	INNER JOIN employees e2  <br>
+		ON e1.manager_id = e2.manager_id <br>
+		AND e1.employee_id < e2.employee_id  <br>
 	WHERE e1.manager_id IS NOT NULL;
 
-12. Group All Employees by Their Manager
-	SELECT manager_id, name AS employee_name
-	FROM employees
-	WHERE manager_id IS NOT NULL
-	ORDER BY manager_id;
+12. Group All Employees by Their Manager  <br> 
+	SELECT manager_id, name AS employee_name  <br>
+	FROM employees <br>
+	WHERE manager_id IS NOT NULL  <br>
+	ORDER BY manager_id; <br>
 
 https://skphd.medium.com/top-20-sql-queries-interview-questions-with-answers-56e70e4878d2
 
 https://roadmap.sh/questions/sql-queries
 
 
-1. What is the difference between WHERE and HAVING?
- WHERE for filtering rows before applying any grouping or aggregation.
-	SELECT * FROM Users
-	WHERE Age > 18;
+1. What is the difference between WHERE and HAVING? <br>
+ WHERE for filtering rows before applying any grouping or aggregation. <br>
+	SELECT * FROM Users <br>
+	WHERE Age > 18;  <br>
 	
-HAVING to filter groups after performing grouping and aggregation. You apply it to the result of aggregate functions, and it is mostly used with the GROUP BY clause.
-	SELECT FirstName, Age FROM Users
-	GROUP BY FirstName, Age
-	HAVING Age > 30;
+HAVING to filter groups after performing grouping and aggregation. You apply it to the result of aggregate functions, and it is mostly used with the GROUP BY clause.<br>
+	SELECT FirstName, Age FROM Users <br>
+	GROUP BY FirstName, Age  <br>
+	HAVING Age > 30;  <br>
 	
-2. How do you find duplicates in a table?
-To find duplicate records, you must first define the criteria for detecting duplicates. 
-Is it a combination of two or more columns where you want to detect the duplicates, or are you searching for duplicates within a single column?
+2. How do you find duplicates in a table?  <br>
+To find duplicate records, you must first define the criteria for detecting duplicates.<br>
+Is it a combination of two or more columns where you want to detect the duplicates, or are you searching for duplicates within a single column? <br>
 
-The following steps will help you find duplicate data in a table.
-	--> Use the GROUP BY clause to group all the rows by the column(s) on which you want to check the duplicate values.
-	--> Use the COUNT function in the HAVING command to check if any groups have more than one entry.
+The following steps will help you find duplicate data in a table. <br>
+	--> Use the GROUP BY clause to group all the rows by the column(s) on which you want to check the duplicate values. <br>
+	--> Use the COUNT function in the HAVING command to check if any groups have more than one entry.<br>
 	single-column duplicates. 
 	--------------------------------------
 	SELECT Age, COUNT(Age)
@@ -161,9 +161,9 @@ The following steps will help you find duplicate data in a table.
 	FROM ranked
 	WHERE rn > 1
 	);
-3. What is the difference between INNER JOIN and LEFT JOIN?
-	An INNER JOIN returns only rows with a match in both tables based on the specified join condition. 
-	If there are no matching rows, there will be no results. The SQL syntax for an INNER JOIN is shown in the code snippet below.
+3. What is the difference between INNER JOIN and LEFT JOIN? <br>
+	An INNER JOIN returns only rows with a match in both tables based on the specified join condition.  <br>
+	If there are no matching rows, there will be no results. The SQL syntax for an INNER JOIN is shown in the code snippet below. <br>
 
 	SELECT table1.column_name1, table1.column_name2, table2.column_name1, table2.column_name2 FROM table1
 	INNER JOIN table2
