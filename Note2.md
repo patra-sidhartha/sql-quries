@@ -165,124 +165,124 @@ The following steps will help you find duplicate data in a table. <br>
 	An INNER JOIN returns only rows with a match in both tables based on the specified join condition.  <br>
 	If there are no matching rows, there will be no results. The SQL syntax for an INNER JOIN is shown in the code snippet below. <br>
 
-	SELECT table1.column_name1, table1.column_name2, table2.column_name1, table2.column_name2 FROM table1
-	INNER JOIN table2
-	ON table1.column_name = table2.column_name
+	SELECT table1.column_name1, table1.column_name2, table2.column_name1, table2.column_name2 FROM table1<br>
+	INNER JOIN table2<br>
+	ON table1.column_name = table2.column_name<br>
 	
-	SELECT users.firstName, users.lastName, users.age, cities.name as cityName FROM users
-	INNER JOIN cities
-	ON users.cityId = cities.id
+	SELECT users.firstName, users.lastName, users.age, cities.name as cityName FROM users<br>
+	INNER JOIN cities<br>
+	ON users.cityId = cities.id<br>
 	
-	LEFT JOIN returns all the rows from the left table (table 1) and the matched rows from the right table (table 2). If no matching rows exist in the right table (table 2), then NULL values are returned. 
+	LEFT JOIN returns all the rows from the left table (table 1) and the matched rows from the right table (table 2). If no matching rows exist in the right table (table 2), then NULL values are returned. <br>
 	
-	SELECT table1.column_name1, table1.column_name2, table2.column_name1, table2.column_name2 FROM table1
-	LEFT JOIN table2
-	ON table1.column_name = table2.column_name 
+	SELECT table1.column_name1, table1.column_name2, table2.column_name1, table2.column_name2 FROM table1<br>
+	LEFT JOIN table2<br>
+	ON table1.column_name = table2.column_name <br>
 
-4. Write a query to find the second highest salary from a table
-	SELECT DISTINCT Salary
-	FROM Salaries
-	ORDER BY Salary DESC
-	LIMIT 1 OFFSET 1
+4. Write a query to find the second highest salary from a table<br>
+	SELECT DISTINCT Salary<br>
+	FROM Salaries<br>
+	ORDER BY Salary DESC<br>
+	LIMIT 1 OFFSET 1<br>
 	
-5. What is the difference between UNION and UNION ALL?
-	UNION is used for removing duplicates while UNION ALL keeps all duplicates. 
-	UNION is slower compared to UNION ALL because of de-duplication. 
-	You use UNION when you want to obtain unique records and UNION ALL when you want every row even if they are repeated.
-6. What are indexes and why are they useful?
-	Indexes in databases are like the indexes in books. 
-	They increase the speed of data retrieval from a database. 
-	When you want to read data from a table, instead of going through all the rows of the table, indexes help to go straight to the row you are looking for.
-	They improve SELECT queries, improve performance, and make sorting and filtering faster. They also ensure data integrity. 
-	There are different types of indexes, which include:
-		B-Tree index
-		Composite index
-		Unique index
-		Full text index
-		Bitmap index
-		Clustered index
-		Non-clustered index
-7. What is a primary key?
-	A primary key is the unique identifier of a row of data in a table.
-	You use it to identify each row uniquely, and no two rows can have the same primary key. A primary key column cannot be null.
-	No, a table in a relational database can only have one primary key constraint. 
+5. What is the difference between UNION and UNION ALL?<br>
+	UNION is used for removing duplicates while UNION ALL keeps all duplicates. <br>
+	UNION is slower compared to UNION ALL because of de-duplication. <br>
+	You use UNION when you want to obtain unique records and UNION ALL when you want every row even if they are repeated.<br>
+6. What are indexes and why are they useful?<br>
+	Indexes in databases are like the indexes in books. <br>
+	They increase the speed of data retrieval from a database. <br>
+	When you want to read data from a table, instead of going through all the rows of the table, indexes help to go straight to the row you are looking for.<br>
+	They improve SELECT queries, improve performance, and make sorting and filtering faster. They also ensure data integrity. <br>
+	There are different types of indexes, which include:<br>
+		B-Tree index<br>
+		Composite index<br>
+		Unique index<br>
+		Full text index<br>
+		Bitmap index<br>
+		Clustered index<br>
+		Non-clustered index<br>
+7. What is a primary key?<br>
+	A primary key is the unique identifier of a row of data in a table.<br>
+	You use it to identify each row uniquely, and no two rows can have the same primary key. A primary key column cannot be null.<br>
+	No, a table in a relational database can only have one primary key constraint. <br>
 	
-	CREATE TABLE users (
-	user_id INT PRIMARY KEY,
-	name VARCHAR(100),
-	phoneNumber VARCHAR(100)
+	CREATE TABLE users (<br>
+	user_id INT PRIMARY KEY,<br>
+	name VARCHAR(100),<br>
+	phoneNumber VARCHAR(100)<br>
 	);
 
-8. What is a foreign key?
-	A foreign key is like a bridge between two tables.
-	A foreign key in one table is the primary key in another. It is the connector between the two tables.
-	A single database table can have multiple foreign keys.
+8. What is a foreign key?<br>
+	A foreign key is like a bridge between two tables.<br>
+	A foreign key in one table is the primary key in another. It is the connector between the two tables.<br>
+	A single database table can have multiple foreign keys.<br>
 	
-9. How does GROUP BY work?
-	GROUP BY is a standard SQL command that groups rows with the same value in the specified column.
-	You should use with aggregate functions such as COUNT, MIN, MAX, etc.
-	SELECT columnName FROM Table
-	GROUP BY columnName
+9. How does GROUP BY work?<br>
+	GROUP BY is a standard SQL command that groups rows with the same value in the specified column.<br>
+	You should use with aggregate functions such as COUNT, MIN, MAX, etc.<br>
+	SELECT columnName FROM Table<br>
+	GROUP BY columnName<br>
 	
-10. What happens if you SELECT a column not in the GROUP BY clause?
-	it will throw an error stating that the column must be in the GROUP BY clause or in an aggregate function. 
+10. What happens if you SELECT a column not in the GROUP BY clause?<br>
+	it will throw an error stating that the column must be in the GROUP BY clause or in an aggregate function. <br>
 	
-	SELECT firstName, phoneNumber FROM phoneNumbers 
-	GROUP BY phoneNumber   --> will get error
+	SELECT firstName, phoneNumber FROM phoneNumbers <br>
+	GROUP BY phoneNumber   --> will get error<br>
 	
-	Write a query to COUNT the number of users by country.
-	SELECT country, COUNT(country) FROM users
-	GROUP BY country
+	Write a query to COUNT the number of users by country.<br>
+	SELECT country, COUNT(country) FROM users<br>
+	GROUP BY country<br>
 	
-11. What happens if you use GROUP BY without an aggregate function?
-	If you use the GROUP BY clause without an aggregate function, it is equivalent to using the DISTINCT command. 
+11. What happens if you use GROUP BY without an aggregate function?<br>
+	If you use the GROUP BY clause without an aggregate function, it is equivalent to using the DISTINCT command. <br>
 	
-	SELECT phoneNumber FROM phoneNumbers
-	GROUP BY phoneNumber
+	SELECT phoneNumber FROM phoneNumbers<br>
+	GROUP BY phoneNumber<br>
 	
-	is equivalent to:
-		SELECT DISTINCT phoneNumber FROM phoneNumbers
-12. What is the difference between COUNT(*) and COUNT(column_name)?
-	The difference is that COUNT(*) counts all the rows of data, including NULL values, 
-	while COUNT(column_name) counts only non-NULL values in the specified column.
+	is equivalent to:<br>
+		SELECT DISTINCT phoneNumber FROM phoneNumbers<br>
+12. What is the difference between COUNT(*) and COUNT(column_name)?<br>
+	The difference is that COUNT(*) counts all the rows of data, including NULL values, <br>
+	while COUNT(column_name) counts only non-NULL values in the specified column.<br>
 	
-13. What is the difference between a subquery and a JOIN?
-	A subquery is a query that is inside another query. You use it for queries that require complex logic. 
-	You should use subqueries when you want to use the result of that subquery for another query. 
+13. What is the difference between a subquery and a JOIN?<br>
+	A subquery is a query that is inside another query. You use it for queries that require complex logic. <br>
+	You should use subqueries when you want to use the result of that subquery for another query. <br>
 	
-	SELECT firstName,
-		(SELECT COUNT(*)
-		FROM cities
-		WHERE cities.id = users.city_id) AS cityCount
-	FROM users;
+	SELECT firstName,<br>
+		(SELECT COUNT(*)<br>
+		FROM cities<br>
+		WHERE cities.id = users.city_id) AS cityCount<br>
+	FROM users;<br>
 	
-	On the other hand, a JOIN combines two or more tables based on related columns between them. 
-	The related column is usually a foreign key.
-	You should use JOINS when you want to pull related data from different tables together. 
+	On the other hand, a JOIN combines two or more tables based on related columns between them. <br>
+	The related column is usually a foreign key.<br>
+	You should use JOINS when you want to pull related data from different tables together. <br>
 	
-	SELECT firstName, COUNT(*) FROM users
-	JOIN cities ON users.city_id = cities.id
+	SELECT firstName, COUNT(*) FROM users<br>
+	JOIN cities ON users.city_id = cities.id <br>
 	
-	A JOIN is faster than a subquery in the following scenarios:
-		When you are querying data from multiple tables.
-		When you are filtering or joining on index columns.
-14. Write a query to find employees earning more than the average salary
-		SELECT * FROM employees
-		WHERE salary > (SELECT AVG(salary) FROM employees);
+	A JOIN is faster than a subquery in the following scenarios: <br>
+		When you are querying data from multiple tables. <br>
+		When you are filtering or joining on index columns. <br>
+14. Write a query to find employees earning more than the average salary <br>
+		SELECT * FROM employees <br>
+		WHERE salary > (SELECT AVG(salary) FROM employees); <br>
 		
-15. Explain how a correlated subquery works
-	A correlated subquery is a subquery that depends on a value from the outer query. 
-	This means that the query is evaluated for each row that might be selected in the outer query. 
+15. Explain how a correlated subquery works <br>
+	A correlated subquery is a subquery that depends on a value from the outer query. <br>
+	This means that the query is evaluated for each row that might be selected in the outer query. <br>
 	
-	SELECT name, country_id, salary
-	FROM employees em
-	WHERE salary > (
-	  SELECT AVG(salary) FROM employees
-	  country_id = em.country_id);
+	SELECT name, country_id, salary<br>
+	FROM employees em<br>
+	WHERE salary > (<br>
+	  SELECT AVG(salary) FROM employees<br>
+	  country_id = em.country_id);<br>
 	  
-	 The code above:
-		Runs the outer query through each row of the table.
-		Takes the country_id from the employees table.
-		Iterates through the other rows and does the same calculation.
-	This leads to a degrading performance as the data in the table grows.
+	 The code above:<br>
+		Runs the outer query through each row of the table.<br>
+		Takes the country_id from the employees table.<br>
+		Iterates through the other rows and does the same calculation. <br>
+	This leads to a degrading performance as the data in the table grows. <br>
 	You should use a correlated subquery if you want to perform row-specific operations or cannot achieve an operation using JOIN or other aggregate functions.	
