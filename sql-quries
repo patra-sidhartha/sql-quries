@@ -1,0 +1,311 @@
+SELECT * FROM emp;
+SELECT * FROM emp WHERE job = 'CLERK';
+
+SELECT ename, job, MAX(sal) FROM emp
+GROUP BY job, ename;
+
+SELECT deptno, job, sum(sal), min(sal), max(sal), avg(sal) FROM emp
+GROUP BY deptno, job
+ORDER BY deptno DESC 
+FETCH FIRST 3 ROWS Only;
+
+SELECT count(*) FROM emp;
+SELECT count(mgr) FROM emp;
+SELECT count(comm) FROM emp;
+
+SELECT deptno, MAX(sal), MIN(SAL), SUM(Sal), Count(*) AS Count
+FROM emp
+WHERE DEPTNO  <> 20
+GROUP BY deptno
+Having MAX(sal) > 2000
+ORDER BY MAX(Sal) DESC;
+
+SELECT deptno, empno, Job, Sal FROM emp ORDER BY DEPTNO DESC, Sal DESC;
+
+
+SELECT e.EMPNO , e.sal, e.ENAME, d.DEPTNO, d.DNAME  
+FROM emp e, DEPT d 
+WHERE e.DEPTNO = d.DEPTNO(+);
+
+SELECT * FROM SALGRADE;
+
+SELECT empno, ename, sal, grade, e.deptno, d.DNAME 
+FROM emp e, dept d, SALGRADE s 
+WHERE e.SAL BETWEEN s.LOSAL  AND s.HISAL
+AND e.DEPTNO = d.DEPTNO
+ORDER BY e.SAL ;
+
+SELECT empno, ename, job, emp.deptno, Dname, loc
+FROM emp, dept;
+
+
+SELECT e.empno, e.ename, e.sal, e.mgr 
+FROM emp e, emp w
+WHERE e.MGR  = w.EMPNO ;
+
+SELECT * FROM emp
+WHERE sal > (SELECT sal FROM emp WHERE ename = 'ALLEN');
+
+SELECT * FROM emp
+WHERE sal > (SELECT max(sal) FROM emp GROUP BY DEPTNO HAVING deptno = 20);
+
+SELECT * FROM emp
+WHERE HIREDATE > (SELECT EMP.HIREDATE  FROM emp WHERE EMP.ENAME = 'JONES' )
+
+SELECT * FROM EMP
+WHERE SAL > (SELECT sal FROM emp WHERE EMP.ENAME = 'SMITH')
+AND SAL < (SELECT sal FROM emp WHERE EMP.ENAME ='ALLEN')
+
+
+SELECT * FROM EMP e 
+WHERE SAL BETWEEN 
+(SELECT sal FROM emp WHERE EMP.ENAME = 'SMITH' ) AND (SELECT sal FROM emp WHERE EMP.ENAME ='ALLEN');
+
+
+SELECT * FROM emp
+WHERE job = (SELECT Job FROM emp WHERE EMP.ENAME= 'JONES')
+AND EMP.ENAME <> 'JONES';
+
+SELECT * FROM emp
+WHERE sal > (SELECT max(sal) FROM emp GROUP BY DEPTNO HAVING deptno = 30);
+
+SELECT * FROM EMP 
+where sal > ALL (SELECT sal FROM emp WHERE DEPTNO =30)
+ORDER BY sal;
+
+SELECT * FROM emp
+WHERE job =ANY (SELECT job FROM emp WHERE deptno = 30)
+
+SELECT * FROM emp
+WHERE job IN (SELECT job FROM emp WHERE deptno = 30)
+
+
+SELECT * FROM emp ORDER BY Sal DESC
+
+SELECT * FROM emp WHERE sal = (SELECT max(sal) FROM emp)
+
+SELECT Max(sal) FROM emp
+WHERE sal < (SELECT max(sal) FROM emp)
+
+SELECT DISTINCT Sal FROM emp e1
+WHERE 2 = (SELECT COUNT (DISTINCT Sal) FROM emp e2 WHERE e2.sal >= e1.SAL); 
+
+SELECT COUNT (DISTINCT Sal) FROM emp;
+
+SELECT job, count(*) FROM EMP
+GROUP BY Job
+HAVING COUNT (*) > 1;
+
+
+
+
+SELECT empno, ename, deptno, sal,
+           ROW_NUMBER() OVER (PARTITION BY job ORDER BY empno) as row_num
+    FROM emp
+    
+SELECT * 
+FROM (
+    SELECT empno, ename, deptno, sal,
+           ROW_NUMBER() OVER (PARTITION BY job ORDER BY empno) as row_num
+    FROM emp
+)
+WHERE row_num > 1;
+
+
+
+SELECT * 
+FROM (
+    SELECT ename, deptno, sal,
+           ROW_NUMBER() OVER (PARTITION BY deptno ORDER BY sal DESC) as rank
+    FROM emp
+)
+WHERE rank = 1;
+
+
+DELETE FROM emp
+WHERE ROWID IN (
+    SELECT rid 
+    FROM (
+        SELECT ROWID rid, 
+               ROW_NUMBER() OVER (PARTITION BY ename, deptno ORDER BY empno) as rn
+        FROM emp
+    )
+    WHERE rn > 1
+);
+
+
+
+DELETE FROM emp
+WHERE ROWID NOT IN (
+    SELECT MIN(ROWID)
+    FROM emp
+    GROUP BY ename, deptno
+);
+
+
+SELECT ename, sal, 
+	ROW_Number() OVER (ORDER BY Sal) AS rn,
+	Rank() OVER (ORDER BY Sal) AS rk,
+	DENSE_RANK() OVER (ORDER BY Sal) AS drk
+FROM emp;
+
+
+WITH CTE_NAME AS (
+    -- Your Subquery Here
+    SELECT * FROM emp WHERE DEPTNO =20
+)
+SELECT * FROM CTE_NAME;
+
+
+-- CTE (Common Table Expression)
+WITH DuplicateCTE AS (
+    SELECT empno, ename, 
+           ROW_NUMBER() OVER (PARTITION BY Sal ORDER BY empno) as rn
+    FROM emp
+)
+SELECT * FROM DuplicateCTE WHERE rn > 1;
+
+SELECT ROWID FROM emp;
+
+SELECT ROWID as rid,
+               ROW_NUMBER() OVER (PARTITION BY ename, deptno ORDER BY empno) as rn
+FROM emp;
+
+
+DELETE FROM emp
+WHERE ROWID IN (
+    WITH DeleteCTE AS (
+        SELECT ROWID as rid,
+               ROW_NUMBER() OVER (PARTITION BY ename, deptno ORDER BY empno) as rn
+        FROM emp
+    )
+    SELECT rid FROM DeleteCTE WHERE rn > 1
+);
+
+
+1. What is a CTE in SQL?
+ CTE (Common Table Expression), also known as the WITH clause, is a temporary result set that exists only for the duration of a single query.
+    WITH CTE_NAME AS (
+    -- Your Subquery Here
+    SELECT * FROM emp
+    )
+    SELECT * FROM CTE_NAME;
+
+    - Using CTE to Handle Duplicates
+        WITH DuplicateCTE AS (
+            SELECT empno, ename, 
+                ROW_NUMBER() OVER (PARTITION BY ename ORDER BY empno) as rn
+            FROM emp
+        )
+        SELECT * FROM DuplicateCTE WHERE rn > 1;
+    - To Delete Duplicates (Oracle Specific):
+        DELETE FROM emp
+        WHERE ROWID IN (
+            WITH DeleteCTE AS (
+                SELECT ROWID as rid,
+                    ROW_NUMBER() OVER (PARTITION BY ename, deptno ORDER BY empno) as rn
+                FROM emp
+            )
+            SELECT rid FROM DeleteCTE WHERE rn > 1
+        );
+2.  RANK(), DENSE_RANK() ad ROW_NUMBER() functions in SQL.
+    In SQL, RANK() and DENSE_RANK() are window functions used to assign a numerical position to rows based on a specific order.
+    Comparison Table
+        Function 	            Handling of Ties	               Resulting Sequence
+        RANK()	            Tied rows get the same rank.	    Skips subsequent numbers (e.g., 1, 1, 3).
+        DENSE_RANK()	    Tied rows get the same rank.	    No gaps; next number is consecutive (e.g., 1, 1, 2).
+        ROW_NUMBER()	    Each row gets a unique number.	    No ties or gaps (e.g., 1, 2, 3).
+
+    SELECT ename, sal, 
+        ROW_Number() OVER (ORDER BY Sal) AS rn,
+        Rank() OVER (ORDER BY Sal) AS rk,
+        DENSE_RANK() OVER (ORDER BY Sal) AS drk
+    FROM emp;
+
+3. Different Kind of Join and its Use cases
+    1. JOIN and INNER JOIN
+        There is no difference between JOIN and INNER JOIN; JOIN is simply shorthand for INNER JOIN. 
+            - Result: It only returns rows where there is a match in both tables.
+            - Use Case: When you only want "perfect matches" (e.g., a list of customers who have actually placed an order). 
+    2. LEFT (OUTER) JOIN
+        Result: Returns all records from the left table, plus any matching records from the right table.
+            - Unmatched Rows: If the left row has no match, the right side will display NULL.
+            - Use Case: Finding items that are "missing" something (e.g., all products, including those that have never been ordered). 
+    3. RIGHT (OUTER) JOIN
+        Result: Returns all records from the right table, plus matching records from the left table.
+            - Unmatched Rows: If the right row has no match, the left side will display NULL.
+            - Use Case: Often used for reversed data relationships (e.g., a list of all departments, including those with zero employees). 
+    4. FULL (OUTER) JOIN
+         Result: Returns all records from both tables.
+            - Unmatched Rows: If there is no match on either side, it puts a NULL in the missing columns.
+            - Use Case: Merging two datasets completely (e.g., a master list of all suppliers and all customers, even if they aren't the same companies).
+
+    Summary Comparison Table
+        Join Type	    Left Table Rows	    Right Table Rows	    Match Required?
+        INNER JOIN	    Only matches	    Only matches	        Yes, on both sides
+        LEFT JOIN	    All rows	        Only matches	        Only on the right
+        RIGHT JOIN	    Only matches	    All rows	            Only on the left
+        FULL JOIN	    All rows	        All rows	            No, matches are linked
+
+    Oracle-Specific Note
+        In 2026, Oracle continues to support the legacy (+ ) operator for outer joins. However, it is recommended to use the standard ANSI syntax (LEFT JOIN, RIGHT JOIN) for better readability and portability. 
+
+    1. Basic Join: Customers with Highest Total Spend
+        - This query joins the Customers and Orders tables, groups the data by the customer, and sorts them by their total spending.
+            SELECT c.customer_id, 
+                c.customer_name, 
+                SUM(o.total_amount) AS total_spent
+            FROM customers c
+            INNER JOIN orders o ON c.customer_id = o.customer_id
+            GROUP BY c.customer_id, c.customer_name
+            ORDER BY total_spent DESC;
+    2. Advanced: Top 3 Customers (Using Window Functions)
+        To handle ties correctly—for example, if two customers have spent exactly the same amount—use DENSE_RANK(). This ensures both get the same rank without skipping subsequent numbers.
+            SELECT * FROM (
+                SELECT c.customer_name, 
+                    SUM(o.total_amount) AS total_spent,
+                    DENSE_RANK() OVER (ORDER BY SUM(o.total_amount) DESC) as rank
+                FROM customers c
+                JOIN orders o ON c.customer_id = o.customer_id
+                GROUP BY c.customer_id, c.customer_name
+            ) 
+            WHERE rank <= 3;
+    3. Recent Activity: Top Customers in 2026
+        If you only want to see top purchases from the current year (2026), add a WHERE clause to filter the order dates.
+            SELECT c.customer_name, 
+                SUM(o.total_amount) AS current_year_spend
+            FROM customers c
+            JOIN orders o ON c.customer_id = o.customer_id
+            WHERE o.order_date >= TO_DATE('2026-01-01', 'YYYY-MM-DD')
+            GROUP BY c.customer_name
+            ORDER BY current_year_spend DESC
+            FETCH FIRST 5 ROWS ONLY; 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
